@@ -75,7 +75,7 @@ jobs:
         run: |
           ctest -C ${{matrix.build_type}}
           if [ "${{ matrix.enable_coverage }}" = "true" ]; then
-            gcovr -j 2 --root ../ --print-summary --xml-pretty --xml coverage.xml . --gcov-executable "llvm-cov gcov" --config-file=""
+            gcovr -j $(nproc) --root ../ --print-summary --xml-pretty --xml coverage.xml . --gcov-executable "llvm-cov gcov" --config-file=""
           fi
 
       - name: Publish to codecov
