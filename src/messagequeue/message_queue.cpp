@@ -1,20 +1,23 @@
-#include "memoryqueue/message_queue.h"
+#include "messagequeue/message_queue.h"
 
 void MessageQueue::push(std::unique_ptr<Message> msg) {
-    // To be implemented
+    m_queue.push_back(std::move(msg));
 }
 
 std::optional<std::unique_ptr<Message>> MessageQueue::try_pop() {
-    // To be implemented
-    return std::nullopt;
+    if (m_queue.empty()) {
+        return std::nullopt;
+    }
+    
+    auto msg = std::move(m_queue.front());
+    m_queue.pop_front();
+    return msg;
 }
 
 size_t MessageQueue::size() const {
-    // To be implemented
-    return 0;
+    return m_queue.size();
 }
 
 bool MessageQueue::empty() const {
-    // To be implemented
-    return true;
+    return m_queue.empty();
 }

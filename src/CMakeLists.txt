@@ -1,1 +1,1 @@
-add_subdirectory(memoryqueue)
+add_subdirectory(messagequeue)
