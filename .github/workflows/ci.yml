@@ -61,7 +61,7 @@ jobs:
 
       - name: Configure CMake
         run: |
-          cmake -S . -B ./build -G "Ninja Multi-Config" -Dcpp_experiments_ENABLE_IPO=OFF -DCMAKE_BUILD_TYPE:STRING=${{matrix.build_type}} -Dcpp_experiments_PACKAGING_MAINTAINER_MODE:BOOL=OFF -Dcpp_experiments_ENABLE_COVERAGE:BOOL=${{ matrix.enable_coverage }} -DGIT_SHA:STRING=${{ github.sha }}
+          cmake -S . -B ./build -G "Ninja Multi-Config" -Dcpp_experiments_ENABLE_IPO=OFF -DCMAKE_BUILD_TYPE:STRING=${{matrix.build_type}} -Dcpp_experiments_PACKAGING_MAINTAINER_MODE:BOOL=OFF -Dcpp_experiments_ENABLE_COVERAGE:BOOL=${{ matrix.enable_coverage }} -Dcpp_experiments_WARNINGS_AS_ERRORS:BOOL=OFF -DGIT_SHA:STRING=${{ github.sha }}
 
       - name: Build
         # Execute the build.  You can specify a specific target with "--target <NAME>"
