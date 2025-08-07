@@ -19,13 +19,16 @@ endif()
 
 include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
 
-add_executable(tests tests.cpp test_messagequeue.cpp)
+add_executable(tests tests.cpp 
+              test_messagequeue.cpp
+              test_threadsafequeue.cpp
+              )
 target_link_libraries(
   tests
   PRIVATE cpp_experiments::cpp_experiments_warnings
           cpp_experiments::cpp_experiments_options
           cpp_experiments::messagequeue
-          
+          cpp_experiments::threadsafequeue
           Catch2::Catch2WithMain)
 
 if(WIN32 AND BUILD_SHARED_LIBS)
