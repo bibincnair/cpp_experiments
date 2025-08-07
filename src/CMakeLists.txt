@@ -1,1 +1,2 @@
 add_subdirectory(messagequeue)
+add_subdirectory(threadsafequeue)
