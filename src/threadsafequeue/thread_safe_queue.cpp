@@ -3,13 +3,13 @@
 namespace threaded_queue {
 
 
-bool ThreadSafeQueue::empty()
+bool ThreadSafeQueue::empty() const
 {
   auto lock = std::lock_guard(m_mutex);
   return m_queue.empty();
 }
 
-size_t ThreadSafeQueue::size()
+size_t ThreadSafeQueue::size() const
 {
   auto lock = std::lock_guard(m_mutex);
   return m_queue.size();

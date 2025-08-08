@@ -31,11 +31,11 @@ public:
 
   void push(std::unique_ptr<Message> msg);
   std::optional<std::unique_ptr<Message>> try_pop();
-  size_t size();
-  bool empty();
+  size_t size() const;
+  bool empty() const;
 
 private:
   std::deque<std::unique_ptr<Message>> m_queue;
-  std::mutex m_mutex;
+  mutable std::mutex m_mutex;
 };
 }// namespace threaded_queue
