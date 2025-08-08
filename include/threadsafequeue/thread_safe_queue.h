@@ -5,6 +5,7 @@
 #include <memory>
 #include <mutex>
 #include <optional>
+#include <condition_variable>
 
 namespace threaded_queue {
 
@@ -31,11 +32,15 @@ public:
 
   void push(std::unique_ptr<Message> msg);
   std::optional<std::unique_ptr<Message>> try_pop();
+  std::optional<std::unique_ptr<Message>> wait_and_pop();
   size_t size() const;
   bool empty() const;
+  void shutdown();
 
 private:
+  bool m_shutdown = false;
   std::deque<std::unique_ptr<Message>> m_queue;
   mutable std::mutex m_mutex;
+  mutable std::condition_variable m_cond_variable;
 };
 }// namespace threaded_queue
