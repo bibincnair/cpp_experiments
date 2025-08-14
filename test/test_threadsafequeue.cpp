@@ -7,7 +7,7 @@
 
 using namespace threaded_queue;
 
-void producer(ThreadSafeQueue &queue, int start_value, int count, std::atomic<int> &producer_count)
+void producer(ThreadSafeQueue<Message> &queue, int start_value, int count, std::atomic<int> &producer_count)
 {
   for (int i = 0; i < count; ++i) {
     queue.push(std::make_unique<Message>(static_cast<uint64_t>(i+1), "dummy", std::vector<uint8_t>{ 0 }));
@@ -16,7 +16,7 @@ void producer(ThreadSafeQueue &queue, int start_value, int count, std::atomic<in
   }
 }
 
-void consumer(ThreadSafeQueue &queue,
+void consumer(ThreadSafeQueue<Message> &queue,
   std::vector<int> &consumed_items,
   std::atomic<bool> &stop_thread,
   std::atomic<int> &consumed_count)
@@ -42,7 +42,7 @@ void consumer(ThreadSafeQueue &queue,
 
 TEST_CASE("ThreadSafeQueue Basic push/pop", "[threadsafequeue][basic][fast]")
 {
-  ThreadSafeQueue queue;
+  ThreadSafeQueue<Message> queue;
   // Basic functionality tests
   SECTION("Single thread operations")
   {
@@ -78,7 +78,7 @@ TEST_CASE("ThreadSafeQueue Basic push/pop", "[threadsafequeue][basic][fast]")
 TEST_CASE("ThreadSafeQueue Single producer consumer", "[threadsafequeue][single][threading]")
 {
   // Single thread pair tests
-  ThreadSafeQueue queue;
+  ThreadSafeQueue<Message> queue;
   std::vector<int> consumed_items;
   std::atomic<bool> should_stop{ false };
   std::atomic<int> producer_count{ 0 };
@@ -120,4 +120,49 @@ TEST_CASE("ThreadSafeQueue Memory safety", "[threadsafequeue][memory][valgrind]"
 TEST_CASE("ThreadSafeQueue Performance benchmark", "[threadsafequeue][performance][slow][.benchmark]")
 {
   // Performance tests (note the . prefix makes it hidden by default)
+}
+
+TEST_CASE("ThreadSafeQueue Template flexibility", "[threadsafequeue][template][basic]")
+{
+  SECTION("Works with int type") {
+    ThreadSafeQueue<int> int_queue;
+    
+    REQUIRE(int_queue.empty());
+    REQUIRE(int_queue.size() == 0);
+    
+    // Push some integers
+    int_queue.push(std::make_unique<int>(42));
+    int_queue.push(std::make_unique<int>(100));
+    
+    REQUIRE_FALSE(int_queue.empty());
+    REQUIRE(int_queue.size() == 2);
+    
+    // Pop and verify
+    auto result1 = int_queue.try_pop();
+    REQUIRE(result1.has_value());
+    REQUIRE(*result1.value() == 42);
+    
+    auto result2 = int_queue.try_pop();
+    REQUIRE(result2.has_value());
+    REQUIRE(*result2.value() == 100);
+    
+    REQUIRE(int_queue.empty());
+  }
+  
+  SECTION("Works with string type") {
+    ThreadSafeQueue<std::string> string_queue;
+    
+    string_queue.push(std::make_unique<std::string>("Hello"));
+    string_queue.push(std::make_unique<std::string>("World"));
+    
+    REQUIRE(string_queue.size() == 2);
+    
+    auto result1 = string_queue.try_pop();
+    REQUIRE(result1.has_value());
+    REQUIRE(*result1.value() == "Hello");
+    
+    auto result2 = string_queue.try_pop();
+    REQUIRE(result2.has_value());
+    REQUIRE(*result2.value() == "World");
+  }
 }
