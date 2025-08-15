@@ -12,16 +12,3 @@ set_target_properties(
     threadpool_lib
     PROPERTIES VERSION ${PROJECT_VERSION}
 )
-
-add_executable(threadpool_main main.cpp)
-target_link_libraries(threadpool_main PRIVATE
-                    threadpool_lib
-                    cpp_experiments_options
-                    cpp_experiments_warnings
-                    )
-
-target_compile_features(threadpool_main PUBLIC cxx_std_20)
-set_target_properties(
-                    threadpool_main
-                    PROPERTIES VERSION ${PROJECT_VERSION}   
-)

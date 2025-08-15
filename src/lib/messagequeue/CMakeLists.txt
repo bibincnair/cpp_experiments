@@ -15,17 +15,3 @@ target_compile_features(messagequeue_lib PUBLIC cxx_std_20)
 set_target_properties(
   messagequeue_lib
   PROPERTIES VERSION ${PROJECT_VERSION})
-
-# Add executable linking main.cpp to messagequeue_lib
-add_executable(messagequeue_main main.cpp)
-
-target_link_libraries(messagequeue_main PRIVATE 
-                      messagequeue_lib 
-                      cpp_experiments_options 
-                      cpp_experiments_warnings)
-
-target_compile_features(messagequeue_main PUBLIC cxx_std_20)
-
-set_target_properties(
-  messagequeue_main
-  PROPERTIES VERSION ${PROJECT_VERSION})

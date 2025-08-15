@@ -1,3 +1,5 @@
-add_subdirectory(messagequeue)
-add_subdirectory(threadsafequeue)
-add_subdirectory(threadpool)
+# Library code
+add_subdirectory(lib)
+
+# Application executables
+add_subdirectory(app)
