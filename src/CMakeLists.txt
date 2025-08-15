@@ -1,2 +1,3 @@
 add_subdirectory(messagequeue)
 add_subdirectory(threadsafequeue)
+add_subdirectory(threadpool)
