@@ -2,9 +2,9 @@
 
 #include "threadsafequeue/thread_safe_queue.h"
 #include <functional>
+#include <future>
 #include <thread>
 #include <vector>
-
 
 class ThreadPool
 {
@@ -20,8 +20,14 @@ private:
   void worker_loop();
 };
 
-template<typename F> void ThreadPool::enqueue(F &&task)
+template<typename F, typename... Args> auto enqueue(F &&f, Args &&...args) -> std::future<decltype(f(args...))>
 {
-  auto wrapped_task = std::make_unique<std::function<void>>(std::forward<F>(task));
-  m_task_queue.push(std::move(wrapped_task));
+
+  using return_type = decltype(f(args...));
+  auto task = std::make_shared < std::packaged_task<return_type>()
+              >> (std::bind(std::forward<F>(f), std::forward<Args>(args)...));
+
+  std::future<return_type> res = task->get_future();
+  m_task_queue.push([task]() { (*task)(); });
+  return res;
 }
