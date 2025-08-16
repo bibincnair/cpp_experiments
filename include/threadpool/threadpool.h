@@ -8,7 +8,7 @@
 
 class ThreadPool
 {
-
+public:
   explicit ThreadPool(size_t num_threads);
   ~ThreadPool();
 
