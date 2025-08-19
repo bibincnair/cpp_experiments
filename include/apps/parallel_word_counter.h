@@ -1,36 +1,44 @@
 #include "threadpool/threadpool.h"
-#include <string>
 #include <fstream>
 #include <map>
+#include <string>
 
-namespace apps{
+namespace apps {
 
-    class ParallelWordCounter{
-        ParallelWordCounter(size_t num_threads, std::string filepath);
-        
-    private:
-        std::string m_file_content;
-        ThreadPool m_thread_pool;
+class ParallelWordCounter
+{
+  ParallelWordCounter(size_t num_threads, std::string filepath);
 
-        /**
-         * @brief Partition the file over N chunks, where N is the number of threads
-         * in threadpool.
-         */
-        void Partition(std::vector<std::string_view>& parition);
+private:
+  size_t m_num_threads;
+  std::string m_file_content;
+  ThreadPool m_thread_pool;
 
-    public:
-        /**
-         * @brief Enqueues the partitioned data frames to be handled and returns a 
-         * local std::map<std::string, int>
-         * 
-         */
-        void Map(std::map<std::string, int>& string_count);
+  /**
+   * @brief Partition the file over N chunks, where N is the number of threads
+   * in threadpool.
+   */
+  void Partition(std::vector<std::string_view> &parition);
 
-        /**
-         * @brief Aggregates per thread map into a single std::map<std::string, int>
-         * 
-         * @return int 
-         */
-        auto Reduce() -> std::map<std::string, int>;
-    };
-}
+  /**
+   * @brief Enqueues the partitioned data frames to be handled
+   *
+   */
+  void Map(std::vector<std::string_view> &partition);
+
+  /**
+   * @brief Aggregates per thread map into a single std::map<std::string, int>
+   *
+   */
+  void Reduce(std::map<std::string, int> &total_string_count);
+
+public:
+  /**
+   * @brief Get the individual word count for the input file.
+   *
+   * @param print : Pretty print the count if flag is set, default true.
+   * @return std::map<std::string, int>
+   */
+  auto GetTotalWordCount(bool print = true) -> std::map<std::string, int> {}
+};
+}// namespace apps
