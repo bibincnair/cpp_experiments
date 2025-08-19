@@ -26,3 +26,13 @@ target_link_libraries(threadsafequeue_demo PRIVATE
                     cpp_experiments_warnings
                     )
 target_compile_features(threadsafequeue_demo PUBLIC cxx_std_20)
+
+
+# parallel word count demo application
+add_executable(parallel_word_counter_demo parallel_word_counter.cpp)
+target_link_libraries(parallel_word_counter_demo PRIVATE
+                    cpp_experiments::threadpool
+                    cpp_experiments_options
+                    cpp_experiments_warnings
+                    )
+target_compile_features(parallel_word_counter_demo PUBLIC cxx_std_20)

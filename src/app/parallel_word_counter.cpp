@@ -53,7 +53,7 @@ void ParallelWordCounter::Partition(std::vector<std::string_view> &partition)
   }
 }
 
-auto ParallelWordCounter::GetTotalWordCount(bool print) -> std::map<std::string, int>
+auto ParallelWordCounter::GetTotalWordCount(bool print) -> std::map<std::string, int, std::less<>>
 {
   std::vector<std::string_view> data_per_thread_partition;
   Partition(data_per_thread_partition);
@@ -116,3 +116,13 @@ auto ParallelWordCounter::GetTotalWordCount(bool print) -> std::map<std::string,
   return total_word_count;
 }
 }// namespace apps
+
+
+int main(int argc, char* argv[]){
+
+  auto total_hardware_threads = std::thread::hardware_concurrency();
+  auto parser_thread_count = std::min(total_hardware_threads/4, 2U);
+  std::string filename("sample_text.txt");
+  apps::ParallelWordCounter word_counter(static_cast<size_t>(parser_thread_count), filename);
+  auto output = word_counter.GetTotalWordCount(true);
+}

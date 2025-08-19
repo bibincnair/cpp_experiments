@@ -7,7 +7,6 @@ namespace apps {
 
 class ParallelWordCounter
 {
-  ParallelWordCounter(size_t num_threads, std::string filepath);
 
 private:
   size_t m_num_threads;
@@ -33,12 +32,14 @@ private:
   void Reduce(std::map<std::string, int> &total_string_count);
 
 public:
+
+  ParallelWordCounter(size_t num_threads, std::string filepath);
   /**
    * @brief Get the individual word count for the input file.
    *
    * @param print : Pretty print the count if flag is set, default true.
    * @return std::map<std::string, int>
    */
-  auto GetTotalWordCount(bool print = true) -> std::map<std::string, int> {}
+  auto GetTotalWordCount(bool print = true) -> std::map<std::string, int, std::less<>>;
 };
 }// namespace apps
