@@ -22,6 +22,7 @@ include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
 add_executable(tests tests.cpp 
               test_messagequeue.cpp
               test_threadsafequeue.cpp
+              test_objectpool.cpp
               )
 target_link_libraries(
   tests
@@ -29,6 +30,7 @@ target_link_libraries(
           cpp_experiments::cpp_experiments_options
           cpp_experiments::messagequeue
           cpp_experiments::threadsafequeue
+          cpp_experiments::objectpool
           Catch2::Catch2WithMain)
 
 if(WIN32 AND BUILD_SHARED_LIBS)

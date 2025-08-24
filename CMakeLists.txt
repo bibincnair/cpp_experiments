@@ -34,7 +34,6 @@ cpp_experiments_setup_dependencies()
 
 cpp_experiments_local_options()
 
-# don't know if this should be set globally from here or not...
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
 set(GIT_SHA
