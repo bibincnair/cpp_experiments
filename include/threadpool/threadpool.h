@@ -14,7 +14,7 @@ public:
   ThreadPool(ThreadPool&&) = default;
   ThreadPool& operator=(ThreadPool&&) = default;
 
-  template <class F, class... Args>
+  template <typename F, typename... Args>
   auto enqueue(F&& f, Args&&... args) -> std::future<std::invoke_result_t<F, Args...>>;
 
 private:
@@ -24,7 +24,7 @@ private:
 };
 
 // Inline template definition must live in the header for visibility
-template <class F, class... Args>
+template <typename F, typename... Args>
 auto ThreadPool::enqueue(F&& f, Args&&... args) -> std::future<std::invoke_result_t<F, Args...>> {
   using return_type = std::invoke_result_t<F, Args...>;
   // Wrap the callable + bound arguments into a packaged_task producing return_type
