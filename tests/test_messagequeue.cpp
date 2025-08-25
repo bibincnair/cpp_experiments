@@ -135,7 +135,7 @@ TEST_CASE("MessageQueue stress test", "[messagequeue][queue][stress]") {
     SECTION("Push many messages") {
         for (size_t i = 0; i < num_messages; ++i) {
             auto msg = std::make_unique<Message>();
-            msg->timestamp_ns = i;
+            msg->timestamp_ns = static_cast<uint64_t>(i);
             msg->topic = "stress_" + std::to_string(i);
             msg->data.resize(i % 100, static_cast<uint8_t>(i % 256));
             
@@ -171,7 +171,7 @@ TEST_CASE("MessageQueue move semantics", "[messagequeue][queue][move]") {
         // Add some messages to queue1
         for (int i = 0; i < 3; ++i) {
             auto msg = std::make_unique<Message>();
-            msg->timestamp_ns = i;
+            msg->timestamp_ns = static_cast<uint64_t>(i);
             msg->topic = "move_test_" + std::to_string(i);
             queue1.push(std::move(msg));
         }
@@ -227,7 +227,7 @@ TEST_CASE("MessageQueue edge cases", "[messagequeue][queue][edge]") {
     SECTION("Alternating push and pop") {
         for (int i = 0; i < 10; ++i) {
             auto msg = std::make_unique<Message>();
-            msg->timestamp_ns = i;
+            msg->timestamp_ns = static_cast<uint64_t>(i);
             msg->topic = "alternating_" + std::to_string(i);
             
             queue.push(std::move(msg));
