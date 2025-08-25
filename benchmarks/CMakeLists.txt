@@ -15,6 +15,6 @@ target_link_libraries(pool_benchmarks PRIVATE
 target_compile_features(pool_benchmarks PRIVATE cxx_std_20)
 
 # CTest integration (optional)
-if(ENABLE_TESTING)
+if(BUILD_TESTING)
     add_test(NAME ObjectPoolBenchmark COMMAND pool_benchmarks --benchmark_min_time=0.1)
 endif()
