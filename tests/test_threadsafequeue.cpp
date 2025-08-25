@@ -7,7 +7,7 @@
 
 using namespace threaded_queue;
 
-void producer(ThreadSafeQueue<Message> &queue, int start_value, int count, std::atomic<int> &producer_count)
+void producer(ThreadSafeQueue<Message> &queue, int /*start_value*/, int count, std::atomic<int> &producer_count)
 {
   for (int i = 0; i < count; ++i) {
     queue.push(std::make_unique<Message>(static_cast<uint64_t>(i+1), "dummy", std::vector<uint8_t>{ 0 }));
