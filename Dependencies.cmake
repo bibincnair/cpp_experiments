@@ -36,4 +36,18 @@ function(cpp_experiments_setup_dependencies)
     cpmaddpackage("gh:lefticus/tools#update_build_system")
   endif()
 
+  if(NOT TARGET benchmark::benchmark)
+    cpmaddpackage(
+      NAME
+      googlebenchmark
+      GITHUB_REPOSITORY
+      google/benchmark
+      VERSION
+      1.9.4
+      OPTIONS
+      "BENCHMARK_ENABLE_TESTING OFF"
+      "BENCHMARK_ENABLE_GTEST_TESTS OFF"
+      "BENCHMARK_DOWNLOAD_DEPENDENCIES ON")
+  endif()
+
 endfunction()
