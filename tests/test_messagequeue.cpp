@@ -151,7 +151,7 @@ TEST_CASE("MessageQueue stress test", "[messagequeue][queue][stress]") {
             REQUIRE(result.has_value());
             
             auto msg = std::move(result.value());
-            REQUIRE(msg->timestamp_ns == i);
+            REQUIRE(msg->timestamp_ns == static_cast<uint64_t>(i));
             REQUIRE(msg->topic == "stress_" + std::to_string(i));
             REQUIRE(msg->data.size() == i % 100);
             if (!msg->data.empty()) {
@@ -186,7 +186,7 @@ TEST_CASE("MessageQueue move semantics", "[messagequeue][queue][move]") {
         for (int i = 0; i < 3; ++i) {
             auto result = queue2.try_pop();
             REQUIRE(result.has_value());
-            REQUIRE(result.value()->timestamp_ns == i);
+            REQUIRE(result.value()->timestamp_ns == static_cast<uint64_t>(i));
         }
     }
     
@@ -235,7 +235,7 @@ TEST_CASE("MessageQueue edge cases", "[messagequeue][queue][edge]") {
             
             auto result = queue.try_pop();
             REQUIRE(result.has_value());
-            REQUIRE(result.value()->timestamp_ns == i);
+            REQUIRE(result.value()->timestamp_ns == static_cast<uint64_t>(i));
             REQUIRE(queue.empty());
         }
     }
