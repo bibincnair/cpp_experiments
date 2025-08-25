@@ -101,7 +101,7 @@ TEST_CASE("ThreadSafeQueue Single producer consumer", "[threadsafequeue][single]
     REQUIRE(consumed_items.size() == 100);
 
     std::sort(consumed_items.begin(), consumed_items.end());
-    for (int i = 0; i < 100; i++) { REQUIRE(consumed_items[i] == i + 1); }
+    for (int i = 0; i < 100; i++) { REQUIRE(consumed_items[static_cast<std::vector<int>::size_type>(i)] == i + 1); }
 
     REQUIRE(queue.empty());
   }
