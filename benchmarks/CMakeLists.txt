@@ -1,13 +1,20 @@
-cmake_minimum_required(VERSION 3.15...3.23)
-project(CmakeConfigPackagebenchmarks LANGUAGES CXX)
+# Benchmarks subdirectory
+# Note: This is included by the main project, not a standalone project
 
-include(FetchContent)
-FetchContent_Declare(
-  GoogleBenchmark
-  GIT_REPOSITORY https://github.com/google/benchmark.git
-  GIT_TAG        v1.9.4
-FetchContent_MakeAvailable(GoogleBenchmark)
+# Create the benchmark executable
+add_executable(pool_benchmarks bench_objectpool.cpp)
 
-# Add benchmark for objectpool.
-add_executable(pool_benchmarks benchmarks/bench_objectpool.cpp)
-target_link_libraries(pool_benchmarks PRIVATE benchmark::benchmark_main)
+# Link to the required libraries
+target_link_libraries(pool_benchmarks PRIVATE
+    benchmark::benchmark_main
+    cpp_experiments::objectpool
+    cpp_experiments_options
+    cpp_experiments_warnings
+)
+
+target_compile_features(pool_benchmarks PRIVATE cxx_std_20)
+
+# CTest integration (optional)
+if(ENABLE_TESTING)
+    add_test(NAME ObjectPoolBenchmark COMMAND pool_benchmarks --benchmark_min_time=0.1)
+endif()
