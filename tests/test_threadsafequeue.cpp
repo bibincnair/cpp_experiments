@@ -64,7 +64,7 @@ TEST_CASE("ThreadSafeQueue Basic push/pop", "[threadsafequeue][basic][fast]")
     std::vector<int> test_values = { 1, 2, 3, 4, 5 };
 
     for (int val : test_values) {
-      queue.push(std::make_unique<Message>(static_cast<uint64_t>(val), "dummy", std::vector<uint8_t>(val)));
+      queue.push(std::make_unique<Message>(static_cast<uint64_t>(val), "dummy", std::vector<uint8_t>(static_cast<std::vector<uint8_t>::size_type>(val))));
     }
 
     for (int expected : test_values) {
