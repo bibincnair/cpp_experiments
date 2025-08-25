@@ -25,7 +25,7 @@ void consumer(ThreadSafeQueue<Message> &queue,
     auto msg_opt = queue.try_pop();
     if (msg_opt.has_value()) {
       auto msg = std::move(msg_opt.value());
-      consumed_items.push_back(msg->timestamp_ns);
+      consumed_items.push_back(static_cast<int>(msg->timestamp_ns));
       consumed_count.fetch_add(1);
     } else {
       std::this_thread::sleep_for(std::chrono::microseconds(10));
@@ -34,7 +34,7 @@ void consumer(ThreadSafeQueue<Message> &queue,
   auto msg_opt = queue.try_pop();
   while (msg_opt.has_value()) {
     auto msg = std::move(msg_opt.value());
-    consumed_items.push_back(msg->timestamp_ns);
+    consumed_items.push_back(static_cast<int>(msg->timestamp_ns));
     consumed_count.fetch_add(1);
     msg_opt = queue.try_pop();
   }
