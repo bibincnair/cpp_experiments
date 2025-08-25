@@ -118,7 +118,7 @@ auto ParallelWordCounter::GetTotalWordCount(bool print) -> std::map<std::string,
 }// namespace apps
 
 
-int main(int argc, char* argv[]){
+int main(int /*argc*/, char* /*argv*/[]){
 
   auto total_hardware_threads = std::thread::hardware_concurrency();
   auto parser_thread_count = std::min(total_hardware_threads/4, 2U);

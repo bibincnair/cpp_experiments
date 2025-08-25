@@ -32,8 +32,8 @@ TEST_CASE("Message struct basic functionality", "[messagequeue][message]") {
     
     SECTION("Message with large data") {
         Message msg;
-        msg.timestamp_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-            std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+        msg.timestamp_ns = static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch()).count());
         msg.topic = "large_data_topic";
         msg.data.resize(1000, 0xAA);
         
@@ -101,7 +101,7 @@ TEST_CASE("MessageQueue push and pop operations", "[messagequeue][queue][operati
         // Push multiple messages
         for (int i = 0; i < 5; ++i) {
             auto msg = std::make_unique<Message>();
-            msg->timestamp_ns = i * 1000;
+            msg->timestamp_ns = static_cast<uint64_t>(i * 1000);
             msg->topic = "fifo_test_" + std::to_string(i);
             msg->data = {static_cast<uint8_t>(i)};
             
@@ -117,7 +117,7 @@ TEST_CASE("MessageQueue push and pop operations", "[messagequeue][queue][operati
             REQUIRE(result.has_value());
             
             auto msg = std::move(result.value());
-            REQUIRE(msg->timestamp_ns == i * 1000);
+            REQUIRE(msg->timestamp_ns == static_cast<uint64_t>(i * 1000));
             REQUIRE(msg->topic == "fifo_test_" + std::to_string(i));
             REQUIRE(msg->data.size() == 1);
             REQUIRE(msg->data[0] == static_cast<uint8_t>(i));
